@@ -93,12 +93,12 @@ class YoloV3(BaseModel):
             x = LeakyReLU(alpha=0.1)(x)
             x = add([x,shortcut])
 
-        # layer 54 ,55 , output: 255 = 3*(4+1+80),it should be adapted by dataset
+        # layer 54 ,55 , output: 75 = 3*(4+1+20),it should be adapted by dataset
         yolov3_1 = x
         yolov3_1 = Conv2D(1024, (3,3), strides=(1,1), padding='same', name='conv_54', use_bias=True)(yolov3_1)
         yolov3_1 = BatchNormalization(name='norm_54')(yolov3_1)
         yolov3_1 = LeakyReLU(alpha=0.1)(yolov3_1)
-        yolov3_1 = Conv2D(255, (1,1), strides=(1,1), padding='same', name='conv_55', use_bias=True)(yolov3_1)
+        yolov3_1 = Conv2D(75, (1,1), strides=(1,1), padding='same', name='conv_55', use_bias=True)(yolov3_1)
         yolov3_1 = Activation('linear')(yolov3_1)
         # layer 56
         x = Conv2D(256, (1,1), strides=(1,1), padding='same', name='conv_56', use_bias=True)(x)
@@ -131,7 +131,7 @@ class YoloV3(BaseModel):
         yolov3_2 = BatchNormalization(name='norm_62')(yolov3_2)
         yolov3_2 = LeakyReLU(alpha=0.1)(yolov3_2)
         #layer 63
-        yolov3_2 = Conv2D(255, (1,1), strides=(1,1), padding='same', name='conv_63', use_bias=True)(yolov3_2)
+        yolov3_2 = Conv2D(75, (1,1), strides=(1,1), padding='same', name='conv_63', use_bias=True)(yolov3_2)
         #layer 64
         x = Conv2D(128, (1,1), strides=(1,1), padding='same', name='conv_64', use_bias=True)(x)
         x = BatchNormalization(name='norm_64')(x)
@@ -163,7 +163,7 @@ class YoloV3(BaseModel):
         yolov3_3 = BatchNormalization(name='norm_70')(yolov3_3)
         yolov3_3 = LeakyReLU(alpha=0.1)(yolov3_3)
         # layer 71
-        yolov3_3 = Conv2D(255, (1,1), strides=(1,1), padding='same', name='conv_71', use_bias=True)(yolov3_3)
+        yolov3_3 = Conv2D(75, (1,1), strides=(1,1), padding='same', name='conv_71', use_bias=True)(yolov3_3)
 
         # feature_extractor
         self.feature_extractor = Model(input_image,[yolov3_1,yolov3_2,yolov3_3], name="yolov3")
@@ -174,5 +174,8 @@ class YoloV3(BaseModel):
             print("{} output shape: {}".format(layer.name, layer.output_shape))
             print layer.output
 
-    def get_layers_feauture(self):
+    def get_layers_feature(self):
         return self.feature_extractor
+
+    def extractor_output(self,input_image):
+        return self.feature_extractor(input_image)
