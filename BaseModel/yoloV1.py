@@ -93,3 +93,6 @@ class YoloV1(BaseModel):
 
     def get_layers_feauture(self):
         return self.feature_extractor
+
+    def extractor_output(self,input_image):
+        return self.feature_extractor(input_image)

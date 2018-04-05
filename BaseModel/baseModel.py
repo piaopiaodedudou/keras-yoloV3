@@ -10,3 +10,5 @@ class BaseModel(object):
     def get_layers_feauture(self):
         raise NotImplementedError("error message")
 
+    def extractor_output(self,input_image):
+        raise NotImplementedError("error message")

@@ -8,7 +8,7 @@ class YoloV1Tiny(BaseModel):
         # tensorflow format :(None,w,h,c)
         input_image = Input(shape=(input_size, input_size, 3))
         #layer1
-        x = Conv2D(16, (3,3), strides=(1,1), padding='same', name='conv_1', use_bias=True)(x)
+        x = Conv2D(16, (3,3), strides=(1,1), padding='same', name='conv_1', use_bias=True)(input_image)
         x = BatchNormalization(name='norm_1')(x)
         x = LeakyReLU(alpha=0.1)(x)
         x = MaxPooling2D(pool_size=(2, 2),strides=(2,2))(x)
@@ -49,3 +49,6 @@ class YoloV1Tiny(BaseModel):
 
     def get_layers_feauture(self):
         return self.feature_extractor
+
+    def extractor_output(self,input_image):
+        return self.feature_extractor(input_image)
